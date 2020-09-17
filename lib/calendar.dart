@@ -27,6 +27,12 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ],
         ),
         centerTitle: false,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.add),
+            onPressed: () {},
+          ),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(15),
