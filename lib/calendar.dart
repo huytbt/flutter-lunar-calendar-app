@@ -18,6 +18,9 @@ class _CalendarState extends State<Calendar> {
             TableRow(
               children: [
                 TableCell(
+                  child: showHeader('SUN'),
+                ),
+                TableCell(
                   child: showHeader('MON'),
                 ),
                 TableCell(
@@ -34,9 +37,6 @@ class _CalendarState extends State<Calendar> {
                 ),
                 TableCell(
                   child: showHeader('SAT'),
-                ),
-                TableCell(
-                  child: showHeader('SUN'),
                 ),
               ],
             ),
