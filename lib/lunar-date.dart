@@ -18,6 +18,15 @@ class LunarDate {
   int leap;
   int timezone;
 
+  LunarDate.fromDateTime(DateTime dateTime) {
+    LunarDate date = _convertSolar2Lunar(dateTime);
+    this.year = date.year;
+    this.month = date.month;
+    this.day = date.day;
+    this.leap = date.leap;
+    this.timezone = date.timezone;
+  }
+
   LunarDate.today() {
     LunarDate date = _convertSolar2Lunar(DateTime.now());
     this.year = date.year;
