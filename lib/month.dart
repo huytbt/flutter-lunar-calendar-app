@@ -2,8 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:lunar_calendar/lunar-date.dart';
 
 class Month extends StatefulWidget {
-  Month({Key key, this.dateTime}) : super(key: key);
+  Month({
+    Key key,
+    this.dateTime,
+    this.onSelectPrevMonth,
+    this.onSelectNextMonth,
+  }) : super(key: key);
   final DateTime dateTime;
+  final Function onSelectPrevMonth;
+  final Function onSelectNextMonth;
 
   @override
   _MonthState createState() => _MonthState();
@@ -29,18 +36,19 @@ class _MonthState extends State<Month> {
             DateTime.now().day,
           );
     _lunarDate = LunarDate.fromDateTime(_dateTime);
-    _lunarDate.day = 1;
 
-    DateTime startDate = _lunarDate.toDateTime();
-    startDate = startDate.subtract(Duration(days: startDate.weekday));
+    DateTime startDate = _dateTime.subtract(Duration(days: _lunarDate.day - 1));
+    startDate = startDate.subtract(Duration(days: startDate.weekday % 7));
 
-    DateTime endDate = _lunarDate.toDateTime();
+    DateTime endDate = _dateTime.subtract(Duration(days: _lunarDate.day - 1));
     endDate = endDate.add(Duration(days: 28));
     while (LunarDate.fromDateTime(endDate.add(Duration(days: 1))).month ==
-        _lunarDate.month) {
+            _lunarDate.month &&
+        LunarDate.fromDateTime(endDate.add(Duration(days: 1))).leap ==
+            _lunarDate.leap) {
       endDate = endDate.add(Duration(days: 1));
     }
-    endDate = endDate.add(Duration(days: 6 - endDate.weekday));
+    endDate = endDate.add(Duration(days: 6 - endDate.weekday % 7));
 
     while (endDate.difference(startDate).inDays >= 0) {
       _monthDays.add(LunarDate.fromDateTime(startDate));
@@ -77,7 +85,8 @@ class _MonthState extends State<Month> {
     bool selected = dateTime.difference(_dateTime).inDays == 0;
     bool today = dateTime.difference(now).inDays == 0;
     bool otherMonth =
-        lunarDate.month != LunarDate.fromDateTime(_dateTime).month;
+        lunarDate.month != LunarDate.fromDateTime(_dateTime).month ||
+            lunarDate.leap != LunarDate.fromDateTime(_dateTime).leap;
 
     bool _darkMode = Theme.of(context).brightness == Brightness.dark;
     Color _background = _darkMode ? Colors.white : Colors.black;
@@ -93,12 +102,26 @@ class _MonthState extends State<Month> {
                 : Theme.of(context).textTheme.bodyText1.color));
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _dateTime = dateTime;
-        });
+        if (otherMonth) {
+          if (widget.onSelectPrevMonth != null &&
+              _dateTime.difference(dateTime).isNegative) {
+            widget.onSelectPrevMonth(dateTime);
+          }
+          if (widget.onSelectNextMonth != null &&
+              !_dateTime.difference(dateTime).isNegative) {
+            widget.onSelectNextMonth(dateTime);
+          }
+        } else {
+          setState(() {
+            _dateTime = dateTime;
+          });
+        }
       },
       child: Container(
         padding: EdgeInsets.all(3),
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+        ),
         child: CircleAvatar(
           backgroundColor: backgroundColor,
           child: Center(

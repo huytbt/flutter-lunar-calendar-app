@@ -11,12 +11,12 @@
 import 'dart:math';
 
 class LunarDate {
-  LunarDate(this.day, this.month, this.year, this.leap, this.timezone);
+  LunarDate(this.day, this.month, this.year, this.leap, this.timeZone);
   int year;
   int month;
   int day;
   int leap;
-  int timezone;
+  int timeZone;
 
   LunarDate.fromDateTime(DateTime dateTime) {
     LunarDate date = _convertSolar2Lunar(dateTime);
@@ -24,7 +24,7 @@ class LunarDate {
     this.month = date.month;
     this.day = date.day;
     this.leap = date.leap;
-    this.timezone = date.timezone;
+    this.timeZone = date.timeZone;
   }
 
   LunarDate.today() {
@@ -33,7 +33,7 @@ class LunarDate {
     this.month = date.month;
     this.day = date.day;
     this.leap = date.leap;
-    this.timezone = date.timezone;
+    this.timeZone = date.timeZone;
   }
 
   String toString() {
@@ -46,7 +46,7 @@ class LunarDate {
       this.month,
       this.year,
       this.leap,
-      this.timezone ?? 0,
+      this.timeZone ?? 0,
     );
   }
 
