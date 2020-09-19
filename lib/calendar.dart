@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:lunar_calendar/month.dart';
-import 'package:swipedetector/swipedetector.dart';
 
 class Calendar extends StatefulWidget {
   Calendar({Key key}) : super(key: key);
@@ -10,7 +9,8 @@ class Calendar extends StatefulWidget {
 }
 
 class _CalendarState extends State<Calendar> {
-  bool _swipeDirection = false;
+  static int _midIndex = 10000;
+  PageController _pageController = PageController(initialPage: _midIndex);
   DateTime _dateTime = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -50,61 +50,38 @@ class _CalendarState extends State<Calendar> {
             ),
           ],
         ),
-        SwipeDetector(
-          onSwipeLeft: () {
-            setState(() {
-              _swipeDirection = true;
-              _dateTime = _dateTime.add(Duration(days: 30));
-            });
-          },
-          onSwipeRight: () {
-            setState(() {
-              _swipeDirection = false;
-              _dateTime = _dateTime.subtract(Duration(days: 30));
-            });
-          },
-          child: AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            transitionBuilder: (Widget child, Animation<double> animation) {
-              final inAnimation =
-                  Tween<Offset>(begin: Offset(1.0, 0.0), end: Offset(0.0, 0.0))
-                      .animate(animation);
-              final outAnimation =
-                  Tween<Offset>(begin: Offset(-1.0, 0.0), end: Offset(0.0, 0.0))
-                      .animate(animation);
-
-              if (child.key == ValueKey(_dateTime.toIso8601String())) {
-                return ClipRect(
-                  child: SlideTransition(
-                    position: _swipeDirection ? inAnimation : outAnimation,
-                    child: child,
-                  ),
-                );
-              } else {
-                return ClipRect(
-                  child: SlideTransition(
-                    position: !_swipeDirection ? inAnimation : outAnimation,
-                    child: child,
-                  ),
-                );
-              }
+        Expanded(
+          child: PageView.builder(
+            controller: _pageController,
+            itemCount: _midIndex * 2,
+            itemBuilder: (BuildContext context, int index) {
+              DateTime dateTime = DateTime(
+                _dateTime.year,
+                _dateTime.month - (_midIndex - index),
+                _dateTime.day,
+              );
+              return Month(
+                dateTime: dateTime,
+                selectedDateTime: dateTime,
+                onSelectDateTime: (dateTime) {
+                  _dateTime = dateTime;
+                },
+                onSelectPrevMonth: (DateTime dateTime) {
+                  _pageController.animateToPage(
+                    index - 1,
+                    curve: Curves.easeIn,
+                    duration: Duration(milliseconds: 500),
+                  );
+                },
+                onSelectNextMonth: (DateTime dateTime) {
+                  _pageController.animateToPage(
+                    index + 1,
+                    curve: Curves.easeIn,
+                    duration: Duration(milliseconds: 500),
+                  );
+                },
+              );
             },
-            child: Month(
-              key: ValueKey<String>(_dateTime.toIso8601String()),
-              dateTime: _dateTime,
-              onSelectPrevMonth: (DateTime dateTime) {
-                setState(() {
-                  _swipeDirection = true;
-                  _dateTime = dateTime;
-                });
-              },
-              onSelectNextMonth: (DateTime dateTime) {
-                setState(() {
-                  _swipeDirection = false;
-                  _dateTime = dateTime;
-                });
-              },
-            ),
           ),
         ),
       ],
