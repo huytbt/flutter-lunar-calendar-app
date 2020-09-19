@@ -94,6 +94,7 @@ class _MonthState extends State<Month> {
     bool otherMonth =
         lunarDate.month != LunarDate.fromDateTime(widget.dateTime).month ||
             lunarDate.leap != LunarDate.fromDateTime(widget.dateTime).leap;
+    bool hasEvents = lunarDate.day == 15;
 
     bool _darkMode = Theme.of(context).brightness == Brightness.dark;
     Color _background = _darkMode ? Colors.white : Colors.black;
@@ -127,36 +128,51 @@ class _MonthState extends State<Month> {
           });
         }
       },
-      child: Container(
-        padding: EdgeInsets.all(3),
-        decoration: BoxDecoration(
-          color: Colors.transparent,
-        ),
-        child: CircleAvatar(
-          backgroundColor: backgroundColor,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  dateTime.day.toString() +
-                      (dateTime.day == 1 ? '/${dateTime.month}' : ''),
-                  style: TextStyle(
-                    color: _color,
-                    fontSize: 14,
-                  ),
+      child: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(),
+            child: CircleAvatar(
+              backgroundColor: backgroundColor,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      dateTime.day.toString() +
+                          (dateTime.day == 1 ? '/${dateTime.month}' : ''),
+                      style: TextStyle(
+                        color: _color,
+                        fontSize: 14,
+                      ),
+                    ),
+                    Text(
+                      lunarDate.day.toString(),
+                      style: TextStyle(
+                        color: _color,
+                        fontSize: 10,
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  lunarDate.day.toString(),
-                  style: TextStyle(
-                    color: _color,
-                    fontSize: 10,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+          Container(
+            width: 8.0,
+            height: 8.0,
+            decoration: new BoxDecoration(
+              color: hasEvents
+                  ? Colors.grey[!_darkMode ? 400 : 800]
+                  : Colors.transparent,
+              shape: BoxShape.circle,
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
+        ],
       ),
     );
   }
