@@ -27,7 +27,8 @@ class _CalendarScreenState extends State<CalendarScreen> {
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(dateUtility.month(lunarDate.month)),
+            Text(dateUtility.month(lunarDate.month) +
+                (lunarDate.leap > 0 ? ' (Leap)' : '')),
             Text(
               '${lunarDate.year}',
               style: TextStyle(
