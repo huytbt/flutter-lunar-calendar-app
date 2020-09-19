@@ -11,6 +11,7 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  CalendarController _calendarController = new CalendarController();
   DateTime _displayedDateTime = DateTime(
     DateTime.now().year,
     DateTime.now().month,
@@ -49,11 +50,35 @@ class _CalendarScreenState extends State<CalendarScreen> {
       body: Container(
         padding: EdgeInsets.all(15),
         child: Calendar(
+          controller: _calendarController,
           onDisplayDateTime: (dateTime) {
             setState(() {
               _displayedDateTime = dateTime;
             });
           },
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        child: Container(
+          child: Row(
+            children: [
+              GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(),
+                  child: Text('Today'),
+                ),
+                onTap: () {
+                  _calendarController.goToday();
+                },
+              ),
+              Spacer(),
+              Container(
+                padding: EdgeInsets.all(15),
+                child: Text('Events'),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -17,6 +17,7 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData.dark().copyWith(
         primaryColor: Colors.black,
         scaffoldBackgroundColor: Colors.black,
+        bottomAppBarColor: Colors.grey[900],
       ),
       home: CalendarScreen(),
     );

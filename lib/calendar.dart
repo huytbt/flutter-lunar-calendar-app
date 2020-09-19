@@ -5,6 +5,7 @@ import 'package:lunar_calendar/month.dart';
 class Calendar extends StatefulWidget {
   Calendar({
     Key key,
+    this.controller,
     this.selectedDateTime,
     this.onSelectDateTime,
     this.onDisplayDateTime,
@@ -12,6 +13,7 @@ class Calendar extends StatefulWidget {
   final DateTime selectedDateTime;
   final Function onSelectDateTime;
   final Function onDisplayDateTime;
+  final CalendarController controller;
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -29,6 +31,9 @@ class _CalendarState extends State<Calendar> {
     if (widget.selectedDateTime != null) {
       _selectedDateTime = widget.selectedDateTime;
     }
+    if (widget.controller != null) {
+      widget.controller.init(this);
+    }
     setFullMoonDay();
   }
 
@@ -43,6 +48,20 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       _fullMoonDay = lunarDate.toDateTime();
     });
+  }
+
+  void goToday() {
+    setState(() {
+      _selectedDateTime = DateTime(
+        DateTime.now().year,
+        DateTime.now().month,
+        DateTime.now().day,
+      );
+    });
+    if (widget.onSelectDateTime != null) {
+      widget.onSelectDateTime(_selectedDateTime);
+    }
+    _pageController.jumpToPage(_midIndex);
   }
 
   @override
@@ -136,5 +155,19 @@ class _CalendarState extends State<Calendar> {
         ),
       ),
     );
+  }
+}
+
+class CalendarController {
+  _CalendarState _calendarState;
+
+  void init(_CalendarState calendarState) {
+    _calendarState = calendarState;
+  }
+
+  void goToday() {
+    if (_calendarState != null) {
+      _calendarState.goToday();
+    }
   }
 }
