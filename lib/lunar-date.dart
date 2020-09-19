@@ -36,6 +36,10 @@ class LunarDate {
     this.timeZone = date.timeZone;
   }
 
+  void setDay(int day) {
+    this.day = day;
+  }
+
   String toString() {
     return '$year-${_twoDigits(month)}-${_twoDigits(day)}';
   }

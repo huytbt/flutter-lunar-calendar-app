@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:date_util/date_util.dart';
 import 'package:lunar_calendar/calendar.dart';
+import 'package:lunar_calendar/lunar-date.dart';
 
 class CalendarScreen extends StatefulWidget {
   CalendarScreen({Key key}) : super(key: key);
@@ -9,16 +11,25 @@ class CalendarScreen extends StatefulWidget {
 }
 
 class _CalendarScreenState extends State<CalendarScreen> {
+  DateTime _displayedDateTime = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+
   @override
   Widget build(BuildContext context) {
+    LunarDate lunarDate = LunarDate.fromDateTime(_displayedDateTime);
+    DateUtil dateUtility = new DateUtil();
+
     return Scaffold(
       appBar: AppBar(
         title: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('September'),
+            Text(dateUtility.month(lunarDate.month)),
             Text(
-              '2020',
+              '${lunarDate.year}',
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.normal,
@@ -36,7 +47,13 @@ class _CalendarScreenState extends State<CalendarScreen> {
       ),
       body: Container(
         padding: EdgeInsets.all(15),
-        child: Calendar(),
+        child: Calendar(
+          onDisplayDateTime: (dateTime) {
+            setState(() {
+              _displayedDateTime = dateTime;
+            });
+          },
+        ),
       ),
     );
   }

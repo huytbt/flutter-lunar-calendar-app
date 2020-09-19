@@ -109,6 +109,9 @@ class _MonthState extends State<Month> {
                 : Theme.of(context).textTheme.bodyText1.color));
     return GestureDetector(
       onTap: () {
+        if (widget.onSelectDateTime != null) {
+          widget.onSelectDateTime(dateTime);
+        }
         if (otherMonth) {
           if (widget.onSelectPrevMonth != null &&
               !widget.dateTime.difference(dateTime).isNegative) {
@@ -119,9 +122,6 @@ class _MonthState extends State<Month> {
             widget.onSelectNextMonth(dateTime);
           }
         } else {
-          if (widget.onSelectDateTime != null) {
-            widget.onSelectDateTime(dateTime);
-          }
           setState(() {
             _selectedDateTime = dateTime;
           });

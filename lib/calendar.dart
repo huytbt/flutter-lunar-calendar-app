@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:lunar_calendar/lunar-date.dart';
 import 'package:lunar_calendar/month.dart';
 
 class Calendar extends StatefulWidget {
-  Calendar({Key key}) : super(key: key);
+  Calendar({
+    Key key,
+    this.selectedDateTime,
+    this.onSelectDateTime,
+    this.onDisplayDateTime,
+  }) : super(key: key);
+  final DateTime selectedDateTime;
+  final Function onSelectDateTime;
+  final Function onDisplayDateTime;
 
   @override
   _CalendarState createState() => _CalendarState();
@@ -11,11 +20,30 @@ class Calendar extends StatefulWidget {
 class _CalendarState extends State<Calendar> {
   static int _midIndex = 10000;
   PageController _pageController = PageController(initialPage: _midIndex);
-  DateTime _dateTime = DateTime(
-    DateTime.now().year,
-    DateTime.now().month,
-    DateTime.now().day,
-  );
+  DateTime _fullMoonDay;
+  DateTime _selectedDateTime;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.selectedDateTime != null) {
+      _selectedDateTime = widget.selectedDateTime;
+    }
+    setFullMoonDay();
+  }
+
+  void setFullMoonDay() {
+    DateTime today = DateTime(
+      DateTime.now().year,
+      DateTime.now().month,
+      DateTime.now().day,
+    );
+    LunarDate lunarDate = LunarDate.fromDateTime(today);
+    lunarDate.setDay(15);
+    setState(() {
+      _fullMoonDay = lunarDate.toDateTime();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +83,18 @@ class _CalendarState extends State<Calendar> {
             controller: _pageController,
             itemCount: _midIndex * 2,
             itemBuilder: (BuildContext context, int index) {
-              DateTime dateTime = DateTime(
-                _dateTime.year,
-                _dateTime.month - (_midIndex - index),
-                _dateTime.day,
-              );
+              DateTime dateTime = _fullMoonDay.subtract(Duration(
+                days: (29.530588853 * (_midIndex - index)).floor(),
+              ));
+
               return Month(
                 dateTime: dateTime,
-                selectedDateTime: dateTime,
+                selectedDateTime: _selectedDateTime,
                 onSelectDateTime: (dateTime) {
-                  _dateTime = dateTime;
+                  _selectedDateTime = dateTime;
+                  if (widget.onSelectDateTime != null) {
+                    widget.onSelectDateTime(_selectedDateTime);
+                  }
                 },
                 onSelectPrevMonth: (DateTime dateTime) {
                   _pageController.animateToPage(
@@ -81,6 +111,14 @@ class _CalendarState extends State<Calendar> {
                   );
                 },
               );
+            },
+            onPageChanged: (index) {
+              if (widget.onDisplayDateTime != null) {
+                DateTime dateTime = _fullMoonDay.subtract(Duration(
+                  days: (29.530588853 * (_midIndex - index)).floor(),
+                ));
+                widget.onDisplayDateTime(dateTime);
+              }
             },
           ),
         ),
