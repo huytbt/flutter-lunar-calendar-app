@@ -34,10 +34,16 @@ class _CalendarState extends State<Calendar> {
     if (widget.controller != null) {
       widget.controller.init(this);
     }
-    setFullMoonDay();
+    getFullMoonDay();
   }
 
-  void setFullMoonDay() {
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  void getFullMoonDay() {
     DateTime today = DateTime(
       DateTime.now().year,
       DateTime.now().month,
@@ -107,24 +113,25 @@ class _CalendarState extends State<Calendar> {
               ));
 
               return Month(
+                key: ValueKey<String>(_selectedDateTime.toString()),
                 dateTime: dateTime,
                 selectedDateTime: _selectedDateTime,
                 onSelectDateTime: (dateTime) {
-                  _selectedDateTime = dateTime;
+                  setState(() {
+                    _selectedDateTime = dateTime;
+                  });
                   if (widget.onSelectDateTime != null) {
                     widget.onSelectDateTime(_selectedDateTime);
                   }
                 },
                 onSelectPrevMonth: (DateTime dateTime) {
-                  _pageController.animateToPage(
-                    index - 1,
+                  _pageController.previousPage(
                     curve: Curves.easeIn,
                     duration: Duration(milliseconds: 500),
                   );
                 },
                 onSelectNextMonth: (DateTime dateTime) {
-                  _pageController.animateToPage(
-                    index + 1,
+                  _pageController.nextPage(
                     curve: Curves.easeIn,
                     duration: Duration(milliseconds: 500),
                   );

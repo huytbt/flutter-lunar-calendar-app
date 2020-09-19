@@ -144,7 +144,7 @@ class _MonthState extends State<Month> {
                           (dateTime.day == 1 ? '/${dateTime.month}' : ''),
                       style: TextStyle(
                         color: _color,
-                        fontSize: 14,
+                        fontSize: 15,
                       ),
                     ),
                     Text(
@@ -162,15 +162,16 @@ class _MonthState extends State<Month> {
           Container(
             width: 8.0,
             height: 8.0,
-            decoration: new BoxDecoration(
+            decoration: BoxDecoration(
               color: hasEvents
                   ? Colors.grey[!_darkMode ? 400 : 800]
                   : Colors.transparent,
               shape: BoxShape.circle,
             ),
           ),
-          SizedBox(
+          Container(
             height: 10,
+            decoration: BoxDecoration(),
           ),
         ],
       ),
