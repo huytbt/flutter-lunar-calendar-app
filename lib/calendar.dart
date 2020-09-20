@@ -116,7 +116,8 @@ class _CalendarState extends State<Calendar> {
             ),
           ],
         ),
-        Container(
+        AnimatedContainer(
+          duration: Duration(milliseconds: 300),
           height: _rows * 64.0,
           child: PageView.builder(
             controller: _pageController,
