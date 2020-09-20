@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_util/date_util.dart';
 import 'package:lunar_calendar/calendar.dart';
+import 'package:lunar_calendar/event.dart';
 import 'package:lunar_calendar/lunar-date.dart';
 
 class CalendarScreen extends StatefulWidget {
@@ -13,6 +14,11 @@ class CalendarScreen extends StatefulWidget {
 class _CalendarScreenState extends State<CalendarScreen> {
   CalendarController _calendarController = new CalendarController();
   DateTime _displayedDateTime = DateTime(
+    DateTime.now().year,
+    DateTime.now().month,
+    DateTime.now().day,
+  );
+  DateTime _selectedDateTime = DateTime(
     DateTime.now().year,
     DateTime.now().month,
     DateTime.now().day,
@@ -47,16 +53,33 @@ class _CalendarScreenState extends State<CalendarScreen> {
           ),
         ],
       ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: Calendar(
-          controller: _calendarController,
-          onDisplayDateTime: (dateTime) {
-            setState(() {
-              _displayedDateTime = dateTime;
-            });
-          },
-        ),
+      body: Column(
+        children: [
+          Container(
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: Calendar(
+              controller: _calendarController,
+              onDisplayDateTime: (dateTime) {
+                setState(() {
+                  _displayedDateTime = dateTime;
+                });
+              },
+              onSelectDateTime: (dateTime) {
+                setState(() {
+                  _selectedDateTime = dateTime;
+                });
+              },
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.only(left: 15, right: 15),
+              child: CalendarEvent(
+                selectedDateTime: _selectedDateTime,
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         child: Container(
@@ -76,6 +99,11 @@ class _CalendarScreenState extends State<CalendarScreen> {
               Container(
                 padding: EdgeInsets.all(15),
                 child: Text('Events'),
+              ),
+              Spacer(),
+              Container(
+                padding: EdgeInsets.all(15),
+                child: Text('Settings'),
               ),
             ],
           ),
