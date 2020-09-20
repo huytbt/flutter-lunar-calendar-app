@@ -13,11 +13,15 @@ class MyApp extends StatelessWidget {
       title: 'Lunar Calendar',
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.lightBlue[900],
+        shadowColor: Colors.transparent,
       ),
       darkTheme: ThemeData.dark().copyWith(
-        primaryColor: Color(0xFF090909),
+        shadowColor: Colors.transparent,
+        primaryColor: Color(0xFF101010),
         scaffoldBackgroundColor: Colors.black,
-        bottomAppBarColor: Color(0xFF090909),
+        bottomAppBarColor: Color(0xFF101010),
+        dialogBackgroundColor: Color(0xFF1F1F1F),
+        accentColor: Colors.white,
       ),
       home: CalendarScreen(),
     );

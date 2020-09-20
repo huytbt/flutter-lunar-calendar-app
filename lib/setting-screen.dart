@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:lunar_calendar/login-form.dart';
 
 class SettingScreen extends StatefulWidget {
   SettingScreen({Key key}) : super(key: key);
@@ -29,21 +30,33 @@ class _SettingScreenState extends State<SettingScreen> {
               child: Text('ACCOUNT'),
             ),
             Container(
-              child: ListTile(
-                leading: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.green[100],
+              child: InkWell(
+                child: ListTile(
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.green[100],
+                    ),
+                    child: Icon(
+                      Icons.login,
+                      color: Colors.green[800],
+                    ),
                   ),
-                  child: Icon(
-                    Icons.login,
-                    color: Colors.green[800],
-                  ),
+                  title: Text('Login'),
+                  trailing: Icon(Icons.arrow_forward_ios),
                 ),
-                title: Text('Login'),
-                trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: LoginForm(),
+                      );
+                    },
+                  );
+                },
               ),
             ),
             Container(
