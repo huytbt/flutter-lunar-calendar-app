@@ -6,12 +6,14 @@ class Month extends StatefulWidget {
     Key key,
     @required this.dateTime,
     this.selectedDateTime,
+    this.onInit,
     this.onSelectDateTime,
     this.onSelectPrevMonth,
     this.onSelectNextMonth,
   }) : super(key: key);
   final DateTime dateTime;
   final DateTime selectedDateTime;
+  final Function onInit;
   final Function onSelectDateTime;
   final Function onSelectPrevMonth;
   final Function onSelectNextMonth;
@@ -32,6 +34,7 @@ class _MonthState extends State<Month> {
   }
 
   void getMonthDays() {
+    List<LunarDate> monthDays = new List();
     _selectedDateTime = widget.selectedDateTime != null
         ? widget.selectedDateTime
         : DateTime(
@@ -58,11 +61,17 @@ class _MonthState extends State<Month> {
     endDate = endDate.add(Duration(days: 6 - endDate.weekday % 7));
 
     while (endDate.difference(startDate).inDays >= 0) {
-      _monthDays.add(LunarDate.fromDateTime(startDate));
+      monthDays.add(LunarDate.fromDateTime(startDate));
       startDate = startDate.add(Duration(days: 1));
     }
 
-    setState(() {});
+    if (widget.onInit != null) {
+      widget.onInit(monthDays);
+    }
+
+    setState(() {
+      _monthDays = monthDays;
+    });
   }
 
   @override
@@ -131,6 +140,7 @@ class _MonthState extends State<Month> {
       child: Column(
         children: [
           Container(
+            width: double.infinity,
             padding: EdgeInsets.all(3),
             decoration: BoxDecoration(),
             child: CircleAvatar(
@@ -160,13 +170,17 @@ class _MonthState extends State<Month> {
             ),
           ),
           Container(
-            width: 8.0,
-            height: 8.0,
-            decoration: BoxDecoration(
-              color: hasEvents
-                  ? Colors.grey[!_darkMode ? 400 : 800]
-                  : Colors.transparent,
-              shape: BoxShape.circle,
+            width: double.infinity,
+            decoration: BoxDecoration(),
+            child: Container(
+              width: 8.0,
+              height: 8.0,
+              decoration: BoxDecoration(
+                color: hasEvents
+                    ? Colors.grey[!_darkMode ? 400 : 800]
+                    : Colors.transparent,
+                shape: BoxShape.circle,
+              ),
             ),
           ),
           Container(

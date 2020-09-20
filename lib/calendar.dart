@@ -24,6 +24,7 @@ class _CalendarState extends State<Calendar> {
   PageController _pageController = PageController(initialPage: _midIndex);
   DateTime _fullMoonDay;
   DateTime _selectedDateTime;
+  int _rows = 5;
 
   @override
   void initState() {
@@ -103,7 +104,8 @@ class _CalendarState extends State<Calendar> {
             ),
           ],
         ),
-        Expanded(
+        Container(
+          height: _rows * 64.0,
           child: PageView.builder(
             controller: _pageController,
             itemCount: _midIndex * 2,
@@ -116,6 +118,9 @@ class _CalendarState extends State<Calendar> {
                 key: ValueKey<String>(_selectedDateTime.toString()),
                 dateTime: dateTime,
                 selectedDateTime: _selectedDateTime,
+                onInit: (List monthDays) {
+                  _rows = (monthDays.length / 7).floor();
+                },
                 onSelectDateTime: (dateTime) {
                   setState(() {
                     _selectedDateTime = dateTime;
