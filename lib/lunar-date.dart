@@ -36,12 +36,27 @@ class LunarDate {
     this.timeZone = date.timeZone;
   }
 
+  LunarDate firstDayOfMonth() {
+    return new LunarDate(1, month, year, leap, timeZone);
+  }
+
+  LunarDate lastDayOfMonth() {
+    LunarDate d1 = new LunarDate(29, month, year, leap, timeZone);
+    LunarDate d2 =
+        LunarDate.fromDateTime(d1.toDateTime().add(Duration(days: 1)));
+    if (d1.month == d2.month && d1.leap == d2.leap) {
+      return d2;
+    }
+    return d1;
+  }
+
   void setDay(int day) {
     this.day = day;
   }
 
   String toString() {
-    return '$year-${_twoDigits(month)}-${_twoDigits(day)}';
+    String leap = this.leap > 0 ? 'L' : '';
+    return '$year-${_twoDigits(month)}$leap-${_twoDigits(day)}';
   }
 
   DateTime toDateTime() {

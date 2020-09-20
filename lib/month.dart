@@ -6,14 +6,12 @@ class Month extends StatefulWidget {
     Key key,
     @required this.dateTime,
     this.selectedDateTime,
-    this.onInit,
     this.onSelectDateTime,
     this.onSelectPrevMonth,
     this.onSelectNextMonth,
   }) : super(key: key);
   final DateTime dateTime;
   final DateTime selectedDateTime;
-  final Function onInit;
   final Function onSelectDateTime;
   final Function onSelectPrevMonth;
   final Function onSelectNextMonth;
@@ -45,28 +43,15 @@ class _MonthState extends State<Month> {
 
     _lunarDate = LunarDate.fromDateTime(widget.dateTime);
 
-    DateTime startDate =
-        widget.dateTime.subtract(Duration(days: _lunarDate.day - 1));
+    DateTime startDate = _lunarDate.firstDayOfMonth().toDateTime();
     startDate = startDate.subtract(Duration(days: startDate.weekday % 7));
 
-    DateTime endDate =
-        widget.dateTime.subtract(Duration(days: _lunarDate.day - 1));
-    endDate = endDate.add(Duration(days: 28));
-    while (LunarDate.fromDateTime(endDate.add(Duration(days: 1))).month ==
-            _lunarDate.month &&
-        LunarDate.fromDateTime(endDate.add(Duration(days: 1))).leap ==
-            _lunarDate.leap) {
-      endDate = endDate.add(Duration(days: 1));
-    }
+    DateTime endDate = _lunarDate.lastDayOfMonth().toDateTime();
     endDate = endDate.add(Duration(days: 6 - endDate.weekday % 7));
 
     while (endDate.difference(startDate).inDays >= 0) {
       monthDays.add(LunarDate.fromDateTime(startDate));
       startDate = startDate.add(Duration(days: 1));
-    }
-
-    if (widget.onInit != null) {
-      widget.onInit(monthDays);
     }
 
     setState(() {

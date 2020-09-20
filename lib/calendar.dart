@@ -55,6 +55,7 @@ class _CalendarState extends State<Calendar> {
     setState(() {
       _fullMoonDay = lunarDate.toDateTime();
     });
+    getRows(_fullMoonDay);
   }
 
   void goToday() {
@@ -69,6 +70,17 @@ class _CalendarState extends State<Calendar> {
       widget.onSelectDateTime(_selectedDateTime);
     }
     _pageController.jumpToPage(_midIndex);
+  }
+
+  void getRows(DateTime dateTime) {
+    LunarDate lastDayOfMonth =
+        LunarDate.fromDateTime(dateTime).lastDayOfMonth();
+    int daysOfMonth = lastDayOfMonth.day;
+    if (daysOfMonth == 30 && (lastDayOfMonth.toDateTime().weekday % 7) == 0) {
+      _rows = 6;
+    } else {
+      _rows = 5;
+    }
   }
 
   @override
@@ -118,9 +130,6 @@ class _CalendarState extends State<Calendar> {
                 key: ValueKey<String>(_selectedDateTime.toString()),
                 dateTime: dateTime,
                 selectedDateTime: _selectedDateTime,
-                onInit: (List monthDays) {
-                  _rows = (monthDays.length / 7).floor();
-                },
                 onSelectDateTime: (dateTime) {
                   setState(() {
                     _selectedDateTime = dateTime;
@@ -144,10 +153,11 @@ class _CalendarState extends State<Calendar> {
               );
             },
             onPageChanged: (index) {
+              DateTime dateTime = _fullMoonDay.subtract(Duration(
+                days: (29.530588853 * (_midIndex - index)).floor(),
+              ));
+              getRows(dateTime);
               if (widget.onDisplayDateTime != null) {
-                DateTime dateTime = _fullMoonDay.subtract(Duration(
-                  days: (29.530588853 * (_midIndex - index)).floor(),
-                ));
                 widget.onDisplayDateTime(dateTime);
               }
             },
