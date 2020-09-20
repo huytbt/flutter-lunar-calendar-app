@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lunar_calendar/forgot-password-form.dart';
 import 'package:lunar_calendar/login-form.dart';
+import 'package:lunar_calendar/register-form.dart';
 
 class SettingScreen extends StatefulWidget {
   SettingScreen({Key key}) : super(key: key);
@@ -61,21 +62,33 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
             ),
             Container(
-              child: ListTile(
-                leading: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    color: Colors.blue[100],
+              child: InkWell(
+                child: ListTile(
+                  leading: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Colors.blue[100],
+                    ),
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Colors.blue[800],
+                    ),
                   ),
-                  child: Icon(
-                    Icons.account_circle,
-                    color: Colors.blue[800],
-                  ),
+                  title: Text('Register'),
+                  trailing: Icon(Icons.arrow_forward_ios),
                 ),
-                title: Text('Register'),
-                trailing: Icon(Icons.arrow_forward_ios),
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        content: RegisterForm(),
+                      );
+                    },
+                  );
+                },
               ),
             ),
             Container(
