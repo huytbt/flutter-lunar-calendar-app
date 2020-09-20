@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class LoginForm extends StatefulWidget {
-  LoginForm({Key key}) : super(key: key);
+class ForgotPasswordForm extends StatefulWidget {
+  ForgotPasswordForm({Key key}) : super(key: key);
 
   @override
-  _LoginFormState createState() => _LoginFormState();
+  _ForgotPasswordFormState createState() => _ForgotPasswordFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -17,7 +17,7 @@ class _LoginFormState extends State<LoginForm> {
           Container(
             padding: EdgeInsets.only(bottom: 15),
             child: Center(
-              child: Text('Login'),
+              child: Text('Forgot Password'),
             ),
           ),
           Container(
@@ -29,18 +29,9 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           Container(
-            child: TextFormField(
-              obscureText: true,
-              decoration: InputDecoration(
-                icon: Icon(Icons.lock),
-                hintText: 'Password',
-              ),
-            ),
-          ),
-          Container(
             padding: EdgeInsets.only(top: 15),
             child: RaisedButton(
-              child: Text('Login'),
+              child: Text('Submit'),
               onPressed: () {
                 Navigator.pop(context);
               },
