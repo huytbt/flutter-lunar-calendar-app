@@ -3,6 +3,8 @@ import 'package:date_util/date_util.dart';
 import 'package:lunar_calendar/calendar.dart';
 import 'package:lunar_calendar/event.dart';
 import 'package:lunar_calendar/lunar-date.dart';
+import 'package:lunar_calendar/setting-screen.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class CalendarScreen extends StatefulWidget {
   CalendarScreen({Key key}) : super(key: key);
@@ -101,9 +103,19 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 child: Text('Events'),
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.all(15),
-                child: Text('Settings'),
+              GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  child: Text('Settings'),
+                ),
+                onTap: () {
+                  showBarModalBottomSheet(
+                    context: context,
+                    builder: (context, scrollController) {
+                      return SettingScreen();
+                    },
+                  );
+                },
               ),
             ],
           ),
