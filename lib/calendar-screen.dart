@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:date_util/date_util.dart';
 import 'package:lunar_calendar/calendar.dart';
+import 'package:lunar_calendar/event-screen.dart';
 import 'package:lunar_calendar/event.dart';
 import 'package:lunar_calendar/lunar-date.dart';
 import 'package:lunar_calendar/setting-screen.dart';
@@ -98,14 +99,26 @@ class _CalendarScreenState extends State<CalendarScreen> {
                 },
               ),
               Spacer(),
-              Container(
-                padding: EdgeInsets.all(15),
-                child: Text('Events'),
+              GestureDetector(
+                child: Container(
+                  padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(),
+                  child: Text('Events'),
+                ),
+                onTap: () {
+                  showBarModalBottomSheet(
+                    context: context,
+                    builder: (context, scrollController) {
+                      return EventScreen();
+                    },
+                  );
+                },
               ),
               Spacer(),
               GestureDetector(
                 child: Container(
                   padding: EdgeInsets.all(15),
+                  decoration: BoxDecoration(),
                   child: Text('Settings'),
                 ),
                 onTap: () {
