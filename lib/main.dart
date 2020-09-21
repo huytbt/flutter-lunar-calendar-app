@@ -14,6 +14,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData.light().copyWith(
         primaryColor: Colors.lightBlue[900],
         shadowColor: Colors.transparent,
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+        ),
       ),
       darkTheme: ThemeData.dark().copyWith(
         shadowColor: Colors.transparent,
@@ -23,6 +26,9 @@ class MyApp extends StatelessWidget {
         dialogBackgroundColor: Color(0xFF1F1F1F),
         accentColor: Colors.white,
         toggleableActiveColor: Colors.blue,
+        appBarTheme: AppBarTheme(
+          elevation: 0,
+        ),
       ),
       home: CalendarScreen(),
     );

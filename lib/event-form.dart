@@ -13,18 +13,21 @@ class _EventFormState extends State<EventForm> {
     return Scaffold(
       appBar: AppBar(
         title: Text('New Event'),
-        leading: Container(
-          alignment: Alignment.centerLeft,
-          child: TextButton(
-            child: Text('Cancel'),
+        leading: SizedBox(
+          width: 70,
+          child: IconButton(
+            icon: Text('Cancel'),
             onPressed: () => Navigator.of(context).pop(null),
           ),
         ),
-        leadingWidth: 100,
+        leadingWidth: 70,
         actions: [
-          TextButton(
-            child: Text('Done'),
-            onPressed: () => Navigator.of(context).pop(null),
+          SizedBox(
+            width: 70,
+            child: IconButton(
+              icon: Text('Save'),
+              onPressed: () => Navigator.of(context).pop(null),
+            ),
           ),
         ],
       ),

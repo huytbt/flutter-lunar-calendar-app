@@ -15,9 +15,12 @@ class _EventScreenState extends State<EventScreen> {
         title: Text('Events'),
         leading: Container(),
         actions: [
-          TextButton(
-            child: Text('Done'),
-            onPressed: () => Navigator.of(context).pop(null),
+          SizedBox(
+            width: 70,
+            child: IconButton(
+              icon: Text('Done'),
+              onPressed: () => Navigator.of(context).pop(null),
+            ),
           ),
         ],
       ),

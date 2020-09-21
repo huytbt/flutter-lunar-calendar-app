@@ -18,9 +18,12 @@ class _SettingScreenState extends State<SettingScreen> {
         title: Text('Settings'),
         leading: Container(),
         actions: [
-          TextButton(
-            child: Text('Done'),
-            onPressed: () => Navigator.of(context).pop(null),
+          SizedBox(
+            width: 70,
+            child: IconButton(
+              icon: Text('Done'),
+              onPressed: () => Navigator.of(context).pop(null),
+            ),
           ),
         ],
       ),
