@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         bottomAppBarColor: Color(0xFF101010),
         dialogBackgroundColor: Color(0xFF1F1F1F),
         accentColor: Colors.white,
+        toggleableActiveColor: Colors.blue,
       ),
       home: CalendarScreen(),
     );

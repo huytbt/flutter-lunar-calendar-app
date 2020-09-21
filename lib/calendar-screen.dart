@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:date_util/date_util.dart';
+import 'package:lunar_calendar/event-form.dart';
 import 'package:lunar_calendar/calendar.dart';
 import 'package:lunar_calendar/event-screen.dart';
 import 'package:lunar_calendar/event.dart';
@@ -52,7 +53,14 @@ class _CalendarScreenState extends State<CalendarScreen> {
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),
-            onPressed: () {},
+            onPressed: () {
+              showBarModalBottomSheet(
+                context: context,
+                builder: (context, scrollController) {
+                  return EventForm();
+                },
+              );
+            },
           ),
         ],
       ),
